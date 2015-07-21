@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             mStationFrom = mStationManager.getStationByCode(stationFrom);
             mStationTo = mStationManager.getStationByCode(stationTo);
             updateStationTitles();
+            doSearch();
         }
     }
 
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         mStationFrom = mStationTo;
         mStationTo = _from;
         updateStationTitles();
+        doSearch();
     }
 
     private void updateStationTitles() {
