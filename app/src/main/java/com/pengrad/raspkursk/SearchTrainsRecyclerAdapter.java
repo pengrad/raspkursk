@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class SearchTrainsRecyclerAdapter extends RecyclerView.Adapter<SearchTrainsRecyclerAdapter.ViewHolder> {
 
-    public static final int ITEM_LAYOUT_ID = R.layout.my_text_view;
+    public static final int ITEM_LAYOUT_ID = R.layout.cardview_train;
     private List<SearchResponse.Thread> data;
 
     public SearchTrainsRecyclerAdapter() {
