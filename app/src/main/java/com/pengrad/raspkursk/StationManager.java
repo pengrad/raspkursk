@@ -2,8 +2,9 @@ package com.pengrad.raspkursk;
 
 import android.content.res.Resources;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,13 +17,17 @@ public class StationManager {
     public static final String kurskCode = "s9600816";
 
     private Map<String, Station> stationsMap;
+    private ArrayList<Station> stations;
 
     public StationManager(Resources resources) {
-        String[] stations = resources.getStringArray(R.array.stations);
-        stationsMap = new HashMap<>(stations.length);
-        for (String station : stations) {
-            String[] splitResult = station.split("\\|", 2);
-            stationsMap.put(splitResult[0], new Station(splitResult[0], splitResult[1]));
+        String[] stationsRes = resources.getStringArray(R.array.stations);
+        stationsMap = new HashMap<>(stationsRes.length);
+        stations = new ArrayList<>(stationsRes.length);
+        for (String stationRes : stationsRes) {
+            String[] splitResult = stationRes.split("\\|", 2);
+            Station station = new Station(splitResult[0], splitResult[1]);
+            stationsMap.put(splitResult[0], station);
+            stations.add(station);
         }
     }
 
@@ -38,7 +43,7 @@ public class StationManager {
         return stationsMap.get(kurskCode);
     }
 
-    public Collection<Station> getAllStations() {
-        return stationsMap.values();
+    public List<Station> getAllStations() {
+        return stations;
     }
 }

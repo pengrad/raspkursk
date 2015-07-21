@@ -3,6 +3,7 @@ package com.pengrad.raspkursk;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,7 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
 
-import java.util.Collection;
+import java.util.List;
+
+import rx.Observable;
 
 /**
  * stas
@@ -23,7 +26,7 @@ public class ChooseStationsActivity extends AppCompatActivity {
     public static final String EXTRA_STATION_TO = "stationTo";
     private NumberPicker mPickerFrom;
     private NumberPicker mPickerTo;
-    private Station[] mStations;
+    private List<Station> mStationList;
 
     public static Intent getIntent(Context context, Station stationFrom, Station stationTo) {
         Intent intent = new Intent(context, ChooseStationsActivity.class).setAction(ACTION);
@@ -43,9 +46,11 @@ public class ChooseStationsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
         StationManager stationManager = new StationManager(getResources());
+        mStationList = stationManager.getAllStations();
 
         Intent intent = getIntent();
         String stationFromCode, stationToCode;
@@ -56,40 +61,40 @@ public class ChooseStationsActivity extends AppCompatActivity {
             stationFromCode = stationManager.getDefaultFromStation().code;
             stationToCode = stationManager.getDefaultToStation().code;
         }
-        Collection<Station> stationCollection = stationManager.getAllStations();
-        mStations = stationCollection.toArray(new Station[stationCollection.size()]);
 
-        int stationFromIndex = 0, stationToIndex = 0;
+        initPickers(stationManager, stationFromCode, stationToCode);
+    }
 
-        String[] stationNames = new String[mStations.length];
-        for (int i = 0; i < mStations.length; i++) {
-            stationNames[i] = mStations[i].title;
-            String code = mStations[i].code;
-            if (code.equals(stationFromCode)) {
-                stationFromIndex = i;
-            } else if (code.equals(stationToCode)) {
-                stationToIndex = i;
-            }
-        }
+    private void initPickers(StationManager stationManager, String stationFromCode, String stationToCode) {
+        Station stationFrom = stationManager.getStationByCode(stationFromCode);
+        Station stationTo = stationManager.getStationByCode(stationToCode);
 
         mPickerFrom = (NumberPicker) findViewById(R.id.picker_from);
         mPickerTo = (NumberPicker) findViewById(R.id.picker_to);
 
         mPickerFrom.setMinValue(0);
-        mPickerFrom.setMaxValue(stationNames.length - 1);
-        mPickerFrom.setValue(stationFromIndex);
-        mPickerFrom.setDisplayedValues(stationNames);
+        mPickerFrom.setMaxValue(mStationList.size() - 1);
         for (View vv : mPickerFrom.getTouchables()) {
             vv.setFocusable(false);
         }
 
         mPickerTo.setMinValue(0);
-        mPickerTo.setMaxValue(stationNames.length - 1);
-        mPickerTo.setValue(stationToIndex);
-        mPickerTo.setDisplayedValues(stationNames);
+        mPickerTo.setMaxValue(mStationList.size() - 1);
         for (View vv : mPickerTo.getTouchables()) {
             vv.setFocusable(false);
         }
+
+        Observable.from(mStationList)
+                .map(station -> station.title)
+                .toList()
+                .subscribe(titles -> {
+                    String[] names = titles.toArray(new String[titles.size()]);
+                    mPickerFrom.setDisplayedValues(names);
+                    mPickerTo.setDisplayedValues(names);
+                });
+
+        mPickerFrom.setValue(mStationList.indexOf(stationFrom));
+        mPickerTo.setValue(mStationList.indexOf(stationTo));
     }
 
     @Override
@@ -100,17 +105,22 @@ public class ChooseStationsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_done) {
-            doReturnStations();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_done:
+                doReturnStations();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void doReturnStations() {
-        int stationFromIndex = mPickerFrom.getValue();
-        int stationToIndex = mPickerTo.getValue();
-        Intent intent = setIntentExtra(new Intent(), mStations[stationFromIndex].code, mStations[stationToIndex].code);
+        Station stationFrom = mStationList.get(mPickerFrom.getValue());
+        Station stationTo = mStationList.get(mPickerTo.getValue());
+        Intent intent = setIntentExtra(new Intent(), stationFrom.code, stationTo.code);
         setResult(RESULT_OK, intent);
         finish();
     }
