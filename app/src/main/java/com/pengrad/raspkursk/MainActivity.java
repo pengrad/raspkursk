@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import rx.Observable;
 import rx.android.app.AppObservable;
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private Station mStationFrom, mStationTo;
-    private EditText mEditTextFrom;
-    private EditText mEditTextTo;
+    private TextView mEditTextFrom;
+    private TextView mEditTextTo;
 
     private StationManager mStationManager;
 
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_switch_stations).setOnClickListener(v -> doSwitchStations());
         findViewById(R.id.button_find).setOnClickListener(v -> doSearch());
 
-        mEditTextFrom = (EditText) findViewById(R.id.edittext_from);
-        mEditTextTo = (EditText) findViewById(R.id.edittext_to);
+        mEditTextFrom = (TextView) findViewById(R.id.edittext_from);
+        mEditTextTo = (TextView) findViewById(R.id.edittext_to);
         mEditTextFrom.setOnClickListener(v -> doChooseStations());
         mEditTextTo.setOnClickListener(v -> doChooseStations());
 
