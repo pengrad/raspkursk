@@ -64,8 +64,8 @@ public class SearchTrainsRecyclerAdapter extends RecyclerView.Adapter<SearchTrai
 
         public void onBind(SearchResponse.Thread thread) {
             textTitle.setText(thread.title());
-            textDeparture.setText(thread.departure);
-            textArrival.setText(thread.arrival);
+            textDeparture.setText(DateParser.timeNoSecs(thread.departure));
+            textArrival.setText(DateParser.timeNoSecs(thread.arrival));
         }
     }
 }
