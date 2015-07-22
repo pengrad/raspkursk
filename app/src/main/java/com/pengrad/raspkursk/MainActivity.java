@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pengrad.raspkursk.recyclerview.ItemClickListener;
 
@@ -153,6 +154,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     @Override
     public void onItemClick(SearchResponse.Thread item) {
-
+        Toast.makeText(this, item.uid(), Toast.LENGTH_SHORT).show();
     }
 }
