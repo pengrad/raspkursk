@@ -25,14 +25,12 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
-                <!-- TODO: ripple http://stackoverflow.com/questions/26686250/material-effect-on-button-with-background-color-->
                 <ImageButton
                     android:id="@+id/button_switch_stations"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
+                    android:background="@drawable/bg_imagebutton"
                     android:padding="8dp"
                     android:src="@drawable/ic_import_export_white_24dp" />
 
