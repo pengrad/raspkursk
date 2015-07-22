@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     @Override
     public void onItemClick(SearchResponse.Thread item) {
+        startActivity(ThreadActivity.getIntent(this, item.title(), item.uid(), mStationFrom, mStationTo));
         Toast.makeText(this, item.uid(), Toast.LENGTH_SHORT).show();
     }
 }
