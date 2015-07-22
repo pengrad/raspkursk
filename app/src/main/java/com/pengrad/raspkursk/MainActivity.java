@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
+import com.pengrad.raspkursk.recyclerview.ItemClickListener;
+
 import rx.Observable;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemClickListener<SearchResponse.Thread> {
 
     public static final String TAG = "MainActivity";
     public static final int REQUEST_CODE_CHOOSE_STATIONS = 120;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this::doSearch);
 
-        mTrainsAdapter = new SearchTrainsRecyclerAdapter();
+        mTrainsAdapter = new SearchTrainsRecyclerAdapter(this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void onSearchResponse(SearchResponse searchResponse) {
         mSwipeRefreshLayout.setRefreshing(false);
-        mTrainsAdapter.setData(searchResponse);
+        mTrainsAdapter.setData(searchResponse.threads);
     }
 
     private Observable<SearchResponse> searchRequest() {
@@ -147,5 +149,10 @@ public class MainActivity extends AppCompatActivity {
         animation.setRepeatCount(0);
         animation.setFillAfter(true);
         view.startAnimation(animation);
+    }
+
+    @Override
+    public void onItemClick(SearchResponse.Thread item) {
+
     }
 }
