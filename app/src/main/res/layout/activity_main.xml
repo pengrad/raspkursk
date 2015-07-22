@@ -37,30 +37,36 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="64dp"
+                    android:layout_marginRight="64dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/edittext_from"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_transparent"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="8dp"
-                        android:text="Курск"
+                        android:text="Лукашевка"
                         android:textColor="@android:color/white"
                         android:textSize="24sp" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginEnd="64dp"
-                        android:layout_marginRight="64dp"
                         android:background="@android:color/white" />
 
                     <TextView
                         android:id="@+id/edittext_to"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/bg_transparent"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="8dp"
-                        android:text="Блохино"
+                        android:text="Дьяконово"
                         android:textColor="@android:color/white"
                         android:textSize="24sp" />
                 </LinearLayout>
