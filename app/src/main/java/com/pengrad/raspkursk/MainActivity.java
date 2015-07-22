@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         AppObservable.bindActivity(this, searchRequest())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(throwable -> new SearchResponse())
                 .subscribe(this::onSearchResponse);
     }
 
