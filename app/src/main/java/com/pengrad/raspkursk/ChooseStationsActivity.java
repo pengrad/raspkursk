@@ -49,6 +49,8 @@ public class ChooseStationsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
 
+        findViewById(R.id.button_done).setOnClickListener(v -> doReturnStations());
+
         StationManager stationManager = new StationManager(getResources());
         mStationList = stationManager.getAllStations();
 
