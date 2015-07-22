@@ -3,4 +3,6 @@
 
     <string name="action_settings">Настройки</string>
     <string name="menu__title__done">Готово</string>
+    <string name="from__station">Откуда</string>
+    <string name="to__station">Куда</string>
 </resources>
