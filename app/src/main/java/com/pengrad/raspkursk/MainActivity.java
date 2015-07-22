@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import rx.Observable;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mEditTextTo;
 
     private StationManager mStationManager;
+    private View mSwitchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        findViewById(R.id.button_switch_stations).setOnClickListener(v -> doSwitchStations());
+        mSwitchView = findViewById(R.id.button_switch_stations);
+        mSwitchView.setOnClickListener(v -> doSwitchStations());
         findViewById(R.id.button_find).setOnClickListener(v -> doSearch());
 
         mEditTextFrom = (TextView) findViewById(R.id.edittext_from);
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         Station _from = mStationFrom;
         mStationFrom = mStationTo;
         mStationTo = _from;
+        rotateAnimation(mSwitchView);
         updateStationTitles();
         doSearch();
     }
@@ -133,5 +138,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Observable<SearchResponse> searchRequest() {
         return mYandexRaspService.search(mStationFrom.code, mStationTo.code, null);
+    }
+
+    private void rotateAnimation(View view) {
+        RotateAnimation animation = new RotateAnimation(0, 180, view.getWidth() / 2, view.getHeight() / 2);
+        animation.setDuration(250); // duration in ms
+        animation.setRepeatCount(0);
+        animation.setFillAfter(true);
+        view.startAnimation(animation);
     }
 }
