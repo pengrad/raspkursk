@@ -3,10 +3,16 @@ package com.pengrad.raspkursk;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ListView;
+
+import rx.Observable;
+import rx.android.app.AppObservable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ThreadActivity extends AppCompatActivity {
 
@@ -15,6 +21,10 @@ public class ThreadActivity extends AppCompatActivity {
     public static final String EXTRA_UID = "uid";
     public static final String EXTRA_FROM = "from";
     public static final String EXTRA_TO = "to";
+    private SwipeRefreshLayout mRefreshLayout;
+    private String mUid;
+    private YandexRaspApi mYandexRaspApi;
+    private ThreadListAdapter mThreadListAdapter;
 
     public static Intent getIntent(Context context, String title, String uid, Station stationFrom, Station stationTo) {
         return new Intent(context, ThreadActivity.class)
@@ -39,16 +49,25 @@ public class ThreadActivity extends AppCompatActivity {
         }
 
         String title = intent.getStringExtra(EXTRA_TITLE);
-        String uid = intent.getStringExtra(EXTRA_UID);
+        mUid = intent.getStringExtra(EXTRA_UID);
         String codeFrom = intent.getStringExtra(EXTRA_FROM);
         String codeTo = intent.getStringExtra(EXTRA_TO);
 
         setTitle(title);
 
         StationManager stationManager = new StationManager(getResources());
+        Station stationFrom = stationManager.getStationByCode(codeFrom);
+        Station stationTo = stationManager.getStationByCode(codeTo);
 
-        TextView textView = (TextView) findViewById(R.id.text);
-        textView.setText(uid + "  " + stationManager.getStationByCode(codeFrom).title + "  " + stationManager.getStationByCode(codeTo).title);
+        mYandexRaspApi = App.getYandexRaspApi();
+
+        mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        mRefreshLayout.setOnRefreshListener(this::doGetThreadInfo);
+        mRefreshLayout.post(this::doGetThreadInfo);
+
+        mThreadListAdapter = new ThreadListAdapter(this, stationFrom, stationTo);
+        ListView listView = (ListView) findViewById(R.id.listview);
+        listView.setAdapter(mThreadListAdapter);
     }
 
     @Override
@@ -58,5 +77,23 @@ public class ThreadActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doGetThreadInfo() {
+        mRefreshLayout.setRefreshing(true);
+        AppObservable.bindActivity(this, threadRequest())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(throwable -> new ThreadResponse())
+                .subscribe(this::onThreadResponse);
+    }
+
+    private void onThreadResponse(ThreadResponse response) {
+        mRefreshLayout.setRefreshing(false);
+        mThreadListAdapter.setStops(response.stops);
+    }
+
+    private Observable<ThreadResponse> threadRequest() {
+        return mYandexRaspApi.thread(mUid);
     }
 }
