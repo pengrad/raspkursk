@@ -9,4 +9,26 @@ import android.app.Application;
  */
 public class App extends Application {
 
+    private static App instance;
+
+    public static YandexRaspApi getYandexRaspApi() {
+        return instance.mYandexRaspApi;
+    }
+
+    private YandexRaspApi mYandexRaspApi;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        instance = (App) getApplicationContext();
+        mYandexRaspApi = buildApi();
+    }
+
+
+    private YandexRaspApi buildApi() {
+//        return ServiceBuilder.yandexRaspService();
+        return new TestApi();
+    }
+
 }

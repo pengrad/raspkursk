@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mTrainsAdapter);
 
-        mYandexRaspApi = ServiceBuilder.yandexRaspService();
+        mYandexRaspApi = App.getYandexRaspApi();
         mStationManager = new StationManager(getResources());
         mStationFrom = mStationManager.getDefaultFromStation();
         mStationTo = mStationManager.getDefaultToStation();
@@ -88,10 +87,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void log(String message) {
-        Log.d(TAG, message);
     }
 
     private void doChooseStations() {
