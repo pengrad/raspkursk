@@ -27,8 +27,8 @@ public class App extends Application {
 
 
     private YandexRaspApi buildApi() {
-//        return ServiceBuilder.yandexRaspService();
-        return new TestApi();
+        return ServiceBuilder.yandexRaspService(BuildConfig.YANDEX_API_KEY);
+//        return new TestApi();
     }
 
 }

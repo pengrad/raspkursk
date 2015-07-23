@@ -11,10 +11,10 @@ import retrofit.RestAdapter;
  */
 public class ServiceBuilder {
 
-    public static YandexRaspApi yandexRaspService() {
+    public static YandexRaspApi yandexRaspService(String apikey) {
 
         RequestInterceptor requestInterceptor = request -> {
-            request.addQueryParam("apikey", "4e6d8aff-67c2-458a-948b-3c449ef33ee4");
+            request.addQueryParam("apikey", apikey);
             request.addQueryParam("format", "json");
             request.addQueryParam("lang", "ru");
         };
