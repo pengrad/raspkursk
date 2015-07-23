@@ -11,7 +11,7 @@ import retrofit.RestAdapter;
  */
 public class ServiceBuilder {
 
-    public static YandexRaspService yandexRaspService() {
+    public static YandexRaspApi yandexRaspService() {
 
         RequestInterceptor requestInterceptor = request -> {
             request.addQueryParam("apikey", "4e6d8aff-67c2-458a-948b-3c449ef33ee4");
@@ -23,9 +23,9 @@ public class ServiceBuilder {
                 .setEndpoint("https://api.rasp.yandex.net/v1.0")
                 .setRequestInterceptor(requestInterceptor)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setLog(message -> Log.d("YandexRaspService", message))
+                .setLog(message -> Log.d("YandexRaspApi", message))
                 .build();
 
-        return restAdapter.create(YandexRaspService.class);
+        return restAdapter.create(YandexRaspApi.class);
     }
 }

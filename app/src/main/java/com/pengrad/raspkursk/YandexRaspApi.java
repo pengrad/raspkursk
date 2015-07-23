@@ -8,7 +8,7 @@ import rx.Observable;
  * stas
  * 7/17/15
  */
-public interface YandexRaspService {
+public interface YandexRaspApi {
 
     @GET("/search/?transport_type=suburban")
     Observable<SearchResponse> search(@Query("from") String fromStation, @Query("to") String toStation, @Query("date") String date);

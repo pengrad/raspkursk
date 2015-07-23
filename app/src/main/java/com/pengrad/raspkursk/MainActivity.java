@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     public static final String TAG = "MainActivity";
     public static final int REQUEST_CODE_CHOOSE_STATIONS = 120;
 
-    private YandexRaspService mYandexRaspService;
+    private YandexRaspApi mYandexRaspApi;
     private SearchTrainsRecyclerAdapter mTrainsAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mTrainsAdapter);
 
-        mYandexRaspService = ServiceBuilder.yandexRaspService();
+        mYandexRaspApi = ServiceBuilder.yandexRaspService();
         mStationManager = new StationManager(getResources());
         mStationFrom = mStationManager.getDefaultFromStation();
         mStationTo = mStationManager.getDefaultToStation();
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     private Observable<SearchResponse> searchRequest() {
-        return mYandexRaspService.search(mStationFrom.code, mStationTo.code, null);
+        return mYandexRaspApi.search(mStationFrom.code, mStationTo.code, null);
     }
 
     private void rotateAnimation(View view) {
