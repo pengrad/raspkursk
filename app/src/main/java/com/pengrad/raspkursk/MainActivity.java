@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.pengrad.raspkursk.recyclerview.ItemClickListener;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     private StationManager mStationManager;
     private View mSwitchView;
+    private Subscription mSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +89,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         return super.onOptionsItemSelected(item);
     }
 
-    private void doChooseStations() {
-        Intent intent = ChooseStationsActivity.getIntent(this, mStationFrom, mStationTo);
-        startActivityForResult(intent, REQUEST_CODE_CHOOSE_STATIONS);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_CHOOSE_STATIONS && resultCode == RESULT_OK) {
@@ -103,6 +100,20 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             updateStationTitles();
             doSearch();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+    }
+
+    private void doChooseStations() {
+        Intent intent = ChooseStationsActivity.getIntent(this, mStationFrom, mStationTo);
+        startActivityForResult(intent, REQUEST_CODE_CHOOSE_STATIONS);
     }
 
     private void doSwitchStations() {
@@ -121,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     private void doSearch() {
         mSwipeRefreshLayout.setRefreshing(true);
-        AppObservable.bindActivity(this, searchRequest())
+        mSubscription = AppObservable.bindActivity(this, searchRequest())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> new SearchResponse())

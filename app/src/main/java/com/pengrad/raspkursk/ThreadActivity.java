@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -25,6 +26,7 @@ public class ThreadActivity extends AppCompatActivity {
     private String mUid;
     private YandexRaspApi mYandexRaspApi;
     private ThreadListAdapter mThreadListAdapter;
+    private Subscription mSubscription;
 
     public static Intent getIntent(Context context, String title, String uid, Station stationFrom, Station stationTo) {
         return new Intent(context, ThreadActivity.class)
@@ -79,9 +81,18 @@ public class ThreadActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+    }
+
     private void doGetThreadInfo() {
         mRefreshLayout.setRefreshing(true);
-        AppObservable.bindActivity(this, threadRequest())
+        mSubscription = AppObservable.bindActivity(this, threadRequest())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> new ThreadResponse())
