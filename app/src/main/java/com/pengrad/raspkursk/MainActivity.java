@@ -106,9 +106,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     protected void onDestroy() {
         super.onDestroy();
 
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+        unsubscribe();
     }
 
     private void doChooseStations() {
@@ -131,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     private void doSearch() {
+        unsubscribe();
         mSwipeRefreshLayout.setRefreshing(true);
         mSubscription = AppObservable.bindActivity(this, searchRequest())
                 .subscribeOn(Schedulers.newThread())
@@ -159,5 +158,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     @Override
     public void onItemClick(SearchResponse.Thread item) {
         startActivity(ThreadActivity.getIntent(this, item.title(), item.uid(), mStationFrom, mStationTo));
+    }
+
+    private void unsubscribe() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
     }
 }

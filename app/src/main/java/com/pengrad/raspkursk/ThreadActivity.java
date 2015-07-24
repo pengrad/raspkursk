@@ -84,13 +84,11 @@ public class ThreadActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
+        unsubscribe();
     }
 
     private void doGetThreadInfo() {
+        unsubscribe();
         mRefreshLayout.setRefreshing(true);
         mSubscription = AppObservable.bindActivity(this, threadRequest())
                 .subscribeOn(Schedulers.newThread())
@@ -106,5 +104,11 @@ public class ThreadActivity extends AppCompatActivity {
 
     private Observable<ThreadResponse> threadRequest() {
         return mYandexRaspApi.thread(mUid);
+    }
+
+    private void unsubscribe() {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
     }
 }
