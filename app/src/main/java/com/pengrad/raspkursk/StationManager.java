@@ -35,12 +35,12 @@ public class StationManager {
         return stationsMap.get(code);
     }
 
-    public Station getDefaultFromStation() {
-        return stationsMap.get(lgovCode);
+    public String getDefaultFromStationCode() {
+        return lgovCode;
     }
 
-    public Station getDefaultToStation() {
-        return stationsMap.get(kurskCode);
+    public String getDefaultToStationCode() {
+        return kurskCode;
     }
 
     public List<Station> getAllStations() {

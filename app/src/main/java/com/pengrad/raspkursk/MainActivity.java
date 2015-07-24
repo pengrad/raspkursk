@@ -1,7 +1,9 @@
 package com.pengrad.raspkursk;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     public static final String TAG = "MainActivity";
     public static final int REQUEST_CODE_CHOOSE_STATIONS = 120;
+    public static final String KEY_STATION_FROM = "KEY_STATION_FROM";
+    public static final String KEY_STATION_TO = "KEY_STATION_TO";
 
     private YandexRaspApi mYandexRaspApi;
     private SearchTrainsRecyclerAdapter mTrainsAdapter;
@@ -67,8 +71,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         mYandexRaspApi = App.getYandexRaspApi();
         mStationManager = new StationManager(getResources());
-        mStationFrom = mStationManager.getDefaultFromStation();
-        mStationTo = mStationManager.getDefaultToStation();
+        loadLastUsedStations();
         updateStationTitles();
     }
 
@@ -105,8 +108,25 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         unsubscribe();
+        saveLastUsedStations();
+    }
+
+    private void saveLastUsedStations() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit()
+                .putString(KEY_STATION_FROM, mStationFrom.code)
+                .putString(KEY_STATION_TO, mStationTo.code)
+                .apply();
+    }
+
+    private void loadLastUsedStations() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String codeFrom = preferences.getString(KEY_STATION_FROM, mStationManager.getDefaultFromStationCode());
+        String codeTo = preferences.getString(KEY_STATION_TO, mStationManager.getDefaultToStationCode());
+
+        mStationFrom = mStationManager.getStationByCode(codeFrom);
+        mStationTo = mStationManager.getStationByCode(codeTo);
     }
 
     private void doChooseStations() {

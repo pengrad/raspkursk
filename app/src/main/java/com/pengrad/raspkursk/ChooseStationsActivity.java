@@ -60,8 +60,8 @@ public class ChooseStationsActivity extends AppCompatActivity {
             stationFromCode = intent.getStringExtra(EXTRA_STATION_FROM);
             stationToCode = intent.getStringExtra(EXTRA_STATION_TO);
         } else {
-            stationFromCode = stationManager.getDefaultFromStation().code;
-            stationToCode = stationManager.getDefaultToStation().code;
+            stationFromCode = stationManager.getDefaultFromStationCode();
+            stationToCode = stationManager.getDefaultToStationCode();
         }
 
         initPickers(stationManager, stationFromCode, stationToCode);
