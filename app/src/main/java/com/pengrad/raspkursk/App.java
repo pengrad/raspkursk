@@ -2,6 +2,8 @@ package com.pengrad.raspkursk;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 
 /**
  * stas
@@ -23,6 +25,7 @@ public class App extends Application {
 
         instance = (App) getApplicationContext();
         mYandexRaspApi = buildApi();
+        LeakCanary.install(this);
     }
 
 
