@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">Электрички Курска</string>
+    <string name="app_name">Льгов – Курск</string>
 
     <string name="action_settings">Настройки</string>
     <string name="action_about">О приложении</string>
     <string name="menu__title__done">Готово</string>
     <string name="from__station">Откуда</string>
     <string name="to__station">Куда</string>
-    <string name="title_activity_about">AboutActivity</string>
 
     <string name="yandex_copyright">Данные предоставлены сервисом <a href="http://rasp.yandex.ru">Яндекс.Расписания</a></string>
 </resources>

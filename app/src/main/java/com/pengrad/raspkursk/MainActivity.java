@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Электрички Курска");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
