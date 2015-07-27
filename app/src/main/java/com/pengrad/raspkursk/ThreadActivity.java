@@ -27,6 +27,7 @@ public class ThreadActivity extends AppCompatActivity {
     private YandexRaspApi mYandexRaspApi;
     private ThreadListAdapter mThreadListAdapter;
     private Subscription mSubscription;
+    private StationManager mStationManager;
 
     public static Intent getIntent(Context context, String title, String uid, Station stationFrom, Station stationTo) {
         return new Intent(context, ThreadActivity.class)
@@ -57,9 +58,9 @@ public class ThreadActivity extends AppCompatActivity {
 
         setTitle(title);
 
-        StationManager stationManager = new StationManager(getResources());
-        Station stationFrom = stationManager.getStationByCode(codeFrom);
-        Station stationTo = stationManager.getStationByCode(codeTo);
+        mStationManager = new StationManager(getResources());
+        Station stationFrom = mStationManager.getStationByCode(codeFrom);
+        Station stationTo = mStationManager.getStationByCode(codeTo);
 
         mYandexRaspApi = App.getYandexRaspApi();
 
@@ -91,6 +92,7 @@ public class ThreadActivity extends AppCompatActivity {
         unsubscribe();
         mRefreshLayout.setRefreshing(true);
         mSubscription = AppObservable.bindActivity(this, threadRequest())
+                .map(response -> response.updateTitles(mStationManager.getStationsMap()))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> new ThreadResponse())

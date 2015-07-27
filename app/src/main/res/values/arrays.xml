@@ -2,23 +2,23 @@
 <resources>
     <string-array name="stations">
         <item>s9600976|Льгов</item>
-        <item>s9602480|401 км</item>
-        <item>s9601922|404 км</item>
-        <item>s9601590|408 км</item>
-        <item>s9655350|412 км</item>
+        <item>s9602480|Сугрово (401 км)</item>
+        <item>s9601922|Клишино (404 км)</item>
+        <item>s9601590|Большие Угоны (408 км)</item>
+        <item>s9655350|Цыганская (412 км)</item>
         <item>s9600975|Блохино</item>
         <item>s9600974|Лукашевка</item>
         <item>s9600817|Курчатов</item>
-        <item>s9602083|428 км</item>
-        <item>s9602481|433 км</item>
-        <item>s9601589|440 км</item>
+        <item>s9602083|Успенка (428 км)</item>
+        <item>s9602481|Дичня (433 км)</item>
+        <item>s9601589|Митрофаново (440 км)</item>
         <item>s9600973|Дьяконово</item>
-        <item>s9601619|454 км</item>
-        <item>s9602482|457 км</item>
+        <item>s9601619|Ворошнево (454 км)</item>
+        <item>s9602482|Силикатный завод (457 км)</item>
         <item>s9600972|Рышково</item>
-        <item>s9602483|465 км</item>
-        <item>s9600971|470 км</item>
-        <item>s9655349|472 км</item>
+        <item>s9602483|Черняховского (465 км)</item>
+        <item>s9600971|Сейм (470 км)</item>
+        <item>s9655349|ПМС (472 км)</item>
         <item>s9600816|Курск</item>
     </string-array>
 </resources>

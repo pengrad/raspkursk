@@ -46,4 +46,8 @@ public class StationManager {
     public List<Station> getAllStations() {
         return stations;
     }
+
+    public Map<String, Station> getStationsMap() {
+        return stationsMap;
+    }
 }
