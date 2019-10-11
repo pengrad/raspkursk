@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         mStationManager = new StationManager(getResources());
         loadLastUsedStations();
         updateStationTitles();
+        doSearch();
     }
 
     @Override
