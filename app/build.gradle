@@ -8,7 +8,7 @@ android {
         applicationId "com.pengrad.raspkursk"
         minSdkVersion 11
         targetSdkVersion 29
-        versionCode 2
+        versionCode 3
         versionName "1.1"
 
         buildConfigField "String", "YANDEX_API_KEY", "\"" + YANDEX_RASP_API_KEY + "\""
