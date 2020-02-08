@@ -19,5 +19,7 @@ jobs:
         with:
           cmd: ./gradlew connectedAndroidTest
           api: 25
-          tag: google_apis
           abi: x86_64
+          tag: default
+          cmdOptions: -no-window
+          verbose: true
