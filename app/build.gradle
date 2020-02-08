@@ -20,10 +20,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(ANDROID_KEYSTORE)
-            storePassword ANDROID_KEYSTORE_PASSWORD
-            keyAlias ANDROID_KEYSTORE_KEY
-            keyPassword ANDROID_KEYSTORE_KEY_PASSWORD
+            storeFile file(hasProperty('ANDROID_KEYSTORE') ? ANDROID_KEYSTORE : "/dev/null")
+            storePassword hasProperty('ANDROID_KEYSTORE_PASSWORD') ? ANDROID_KEYSTORE_PASSWORD : ""
+            keyAlias hasProperty('ANDROID_KEYSTORE_KEY') ? ANDROID_KEYSTORE_KEY : ""
+            keyPassword hasProperty('ANDROID_KEYSTORE_KEY_PASSWORD') ? ANDROID_KEYSTORE_KEY_PASSWORD : ""
         }
     }
 
@@ -48,7 +48,7 @@ android {
     }
 
     play {
-        jsonFile = file(GOOGLE_PLAY_KEY_FILE)
+        jsonFile = file(hasProperty('GOOGLE_PLAY_KEY_FILE') ? GOOGLE_PLAY_KEY_FILE : "/dev/null")
         track = 'alpha'
     }
 }
