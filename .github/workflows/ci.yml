@@ -1,0 +1,25 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.0.3
+
+      - name: Unit tests
+        run: ./gradlew test
+
+      - name: Instrumentation Tests
+        uses: malinskiy/action-android/emulator-run-cmd@release/0.0.3
+        with:
+          cmd: ./gradlew connectedAndroidTest
+          api: 25
+          abi: x86_64
+          tag: default
+          cmdOptions: -no-window
+          verbose: true
