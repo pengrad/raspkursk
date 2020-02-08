@@ -20,4 +20,4 @@ jobs:
           cmd: ./gradlew connectedAndroidTest
           api: 25
           tag: google_apis
-          abi: armeabi-v7a
+          abi: x86_64
